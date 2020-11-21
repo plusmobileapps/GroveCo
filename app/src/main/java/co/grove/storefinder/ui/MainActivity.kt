@@ -1,7 +1,8 @@
-package co.grove.storefinder
+package co.grove.storefinder.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import co.grove.storefinder.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
