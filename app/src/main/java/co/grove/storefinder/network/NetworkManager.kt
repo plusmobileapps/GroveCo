@@ -15,7 +15,7 @@ class NetworkManager(private val context: Context) {
     private val queue = Volley.newRequestQueue(context)
     private val url = "http://rickandmortyapi.com/api/character/"
 
-    suspend fun requestGeocodeData() = suspendCoroutine<GeocodeResponse> { cont ->
+    suspend fun requestGeocodeData(address: String) = suspendCoroutine<GeocodeResponse> { cont ->
         val stringRequest = StringRequest(
             Request.Method.GET, url,
             { response ->
