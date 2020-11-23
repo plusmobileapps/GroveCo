@@ -35,14 +35,6 @@ public class CSVFile {
         catch (IOException ex) {
             throw new RuntimeException("Error in reading CSV file: "+ex);
         }
-        finally {
-//            try {
-//                inputStream.close();
-//            }
-//            catch (IOException e) {
-//                throw new RuntimeException("Error while closing input stream: "+e);
-//            }
-        }
         return resultList;
     }
 

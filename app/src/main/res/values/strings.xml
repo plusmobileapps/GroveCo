@@ -6,5 +6,6 @@
     <string name="find_closest_store">Find Closest Store</string>
     <string name="by_zip_code">By Zip Code</string>
     <string name="by_address">By Address</string>
-    <string name="closest_store">Closest Store:</string>
+    <string name="an_error_occurred">An Error Occurred</string>
+    <string name="closest_store">The Closest Store is %1$s with a distance of %2$s</string>
 </resources>
