@@ -1,5 +1,6 @@
 package co.grove.storefinder.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,6 +30,7 @@ class MainViewModel: ViewModel() {
     }
 
     fun onFindStoreClicked() {
+        Log.e("dbug", "onFindStoreClicked")
         val address = addressField.value
         if (address != null) {
             viewModelScope.launch {
@@ -43,4 +45,8 @@ class MainViewModel: ViewModel() {
         }
     }
 
+    init {
+        unitsRadioGroupItem.value = 1
+        addressRadioGroupItem.value = 1
+    }
 }

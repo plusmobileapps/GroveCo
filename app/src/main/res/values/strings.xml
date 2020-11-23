@@ -8,4 +8,7 @@
     <string name="by_address">By Address</string>
     <string name="an_error_occurred">An Error Occurred</string>
     <string name="closest_store">The Closest Store is %1$s with a distance of %2$s</string>
+
+    <string name="error_title">Error</string>
+    <string name="empty_address_error">The Address field cannot be empty</string>
 </resources>

@@ -104,28 +104,16 @@
             app:layout_constraintTop_toBottomOf="@+id/unitsGroup" />
 
         <TextView
-            android:id="@+id/closestLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/closest_store"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/findStoreButton"
-            tools:text="Closest Store:" />
-
-        <TextView
             android:id="@+id/closestStoreData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:text=""
+            android:text="@string/closest_store"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/closestLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/findStoreButton" />
 
         <TextView
             android:id="@+id/errorMessage"
