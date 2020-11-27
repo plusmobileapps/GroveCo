@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="ViewModel"
-            type="co.grove.storefinder.viewmodel.MainViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,7 +39,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:checkedButton="@={ViewModel.unitsRadioGroupItem}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPostalAddress">
 
@@ -72,7 +64,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:checkedButton="@={ViewModel.addressRadioGroupItem}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPostalAddress">
 
@@ -98,7 +89,6 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
-            android:onClick="@{() -> ViewModel.onFindStoreClicked()}"
             android:text="@string/find_closest_store"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/unitsGroup" />

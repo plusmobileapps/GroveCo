@@ -10,9 +10,19 @@ import co.grove.storefinder.ui.MainActivityInterface
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
+enum class Units {
+    MILES,
+    KILOMETERS
+}
+
+enum class AddressType {
+    STREET,
+    ZIPCODE
+}
+
 class MainViewModel: ViewModel() {
-    var unitsRadioGroupItem = MutableLiveData<Int>()
-    var addressRadioGroupItem = MutableLiveData<Int>()
+    var units = MutableLiveData<Units>()
+    var addressType = MutableLiveData<AddressType>()
     var addressField = MutableLiveData<String>()
 
     lateinit var storeRepo: StoreRepo
@@ -45,8 +55,4 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    init {
-        unitsRadioGroupItem.value = 1
-        addressRadioGroupItem.value = 1
-    }
 }
