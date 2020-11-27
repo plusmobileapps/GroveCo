@@ -57,31 +57,6 @@
 
         </RadioGroup>
 
-        <RadioGroup
-            android:id="@+id/addressGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addressEditText">
-
-
-            <RadioButton
-                android:id="@+id/byAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/by_address" />
-
-            <RadioButton
-                android:id="@+id/byZIPCode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/by_zip_code" />
-        </RadioGroup>
-
         <Button
             android:id="@+id/findStoreButton"
             android:layout_width="wrap_content"
@@ -100,8 +75,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:singleLine="false"
             android:text="@string/closest_store"
             android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/findStoreButton" />
 

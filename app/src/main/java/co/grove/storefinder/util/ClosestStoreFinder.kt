@@ -2,13 +2,14 @@ package co.grove.storefinder.util
 
 import co.grove.storefinder.model.Store
 import co.grove.storefinder.model.StoreRepo
+import co.grove.storefinder.viewmodel.Units
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
 class ClosestStoreFinder(val repo: StoreRepo) {
 
-    fun findClosestStore(location: Pair<Double, Double>, miles: Boolean): Pair<Store, Double> {
+    fun findClosestStore(location: Pair<Double, Double>, unitType: Units): Pair<Store, Double> {
         val lat = location.first
         val lon = location.second
 
@@ -19,7 +20,7 @@ class ClosestStoreFinder(val repo: StoreRepo) {
             val store = repo.getStore(idx)
             val storeLat = store.lat
             val storeLon = store.long
-            val distance = calculateDistance(lat, lon, storeLat, storeLon, miles)
+            val distance = calculateDistance(lat, lon, storeLat, storeLon, unitType)
 
             if (distance < closestDistance) {
                 closestDistance = distance
@@ -40,7 +41,7 @@ class ClosestStoreFinder(val repo: StoreRepo) {
         lon1: Double,
         lat2: Double,
         lon2: Double,
-        miles: Boolean
+        unitType: Units
     ): Double {
 
         val theta = lon1 - lon2;
@@ -55,7 +56,7 @@ class ClosestStoreFinder(val repo: StoreRepo) {
 
         dist *= 60 * 1.1515
 
-        if (!miles) {
+        if (unitType == Units.KILOMETERS) {
             dist *= 1.609344
         }
 

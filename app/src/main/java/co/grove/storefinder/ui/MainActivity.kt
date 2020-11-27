@@ -1,6 +1,7 @@
 package co.grove.storefinder.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
@@ -11,7 +12,6 @@ import co.grove.storefinder.R
 import co.grove.storefinder.model.Store
 import co.grove.storefinder.model.StoreRepo
 import co.grove.storefinder.network.NetworkManager
-import co.grove.storefinder.viewmodel.AddressType
 import co.grove.storefinder.viewmodel.MainViewModel
 import co.grove.storefinder.viewmodel.Units
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
     lateinit var errorText: TextView
 
     lateinit var unitsGroup: RadioGroup
-    lateinit var addressGroup: RadioGroup
 
     lateinit var addressText: EditText
 
@@ -47,7 +46,6 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         errorText = findViewById(R.id.errorMessage)
 
         unitsGroup = findViewById(R.id.unitsGroup)
-        addressGroup = findViewById(R.id.addressGroup)
 
         unitsGroup.setOnCheckedChangeListener { _, _ ->
             val milesButton = findViewById<RadioButton>(R.id.milesButton)
@@ -56,16 +54,6 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
             } else {
                 viewModel.units.value = Units.KILOMETERS
             }
-        }
-
-        addressGroup.setOnCheckedChangeListener { _, _ ->
-            val addressButton = findViewById<RadioButton>(R.id.byAddress)
-            if (addressButton.isChecked) {
-                viewModel.addressType.value = AddressType.STREET
-            } else {
-                viewModel.addressType.value = AddressType.ZIPCODE
-            }
-
         }
 
         findViewById<Button>(R.id.findStoreButton).setOnClickListener {
@@ -88,10 +76,11 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         errorText.visibility = VISIBLE
     }
 
-    override fun onStoreFound(store: Store, distance: String) {
+    override fun onStoreFound(store: Store, distance: Double, units: Units) {
         storeData.visibility = VISIBLE
         errorText.visibility = GONE
-        storeData.text = resources.getString(R.string.closest_store, store.storeName, distance)
+        val distanceString = "%.2f".format(distance) + " " + units.toString()
+        storeData.text = resources.getString(R.string.closest_store, store.storeName, distanceString)
     }
 
 }

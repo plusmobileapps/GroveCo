@@ -20,15 +20,13 @@ class NetworkManager(context: Context) {
     private val url = "https://us1.locationiq.com/v1/search.php"
 
     suspend fun requestGeocodeData(address: String) = suspendCoroutine<GeocodeLocations> { cont ->
-        Log.e("dbug", "Requesting for address " + address)
-
+        Log.e(TAG, "Requesting for address $address")
 
         val stringRequest = StringRequest(
             Request.Method.GET,
             createUrl(address),
             { response ->
                 try {
-                    Log.e("dbug", "Here")
                     try {
                         val responseObj: Array<GeocodeLocations> = Gson().fromJson(response, Array<GeocodeLocations>::class.java)
                         cont.resume(responseObj[0])

@@ -9,21 +9,18 @@ import co.grove.storefinder.network.NetworkManager
 import co.grove.storefinder.ui.MainActivityInterface
 import co.grove.storefinder.util.ClosestStoreFinder
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
-enum class Units {
-    MILES,
-    KILOMETERS
-}
+enum class Units(var displayString: String) {
+    MILES("Miles"),
+    KILOMETERS("Kilometers");
 
-enum class AddressType {
-    STREET,
-    ZIPCODE
+    override fun toString(): String {
+        return displayString
+    }
 }
 
 class MainViewModel : ViewModel() {
     var units = MutableLiveData<Units>()
-    var addressType = MutableLiveData<AddressType>()
     var addressField = MutableLiveData<String>()
 
     lateinit var storeRepo: StoreRepo
@@ -47,7 +44,6 @@ class MainViewModel : ViewModel() {
     }
 
     fun onFindStoreClicked() {
-        Log.e("dbug", "onFindStoreClicked")
         val address = addressField.value
         if (address != null) {
             viewModelScope.launch {
@@ -55,14 +51,15 @@ class MainViewModel : ViewModel() {
                     val location = networkManager.requestGeocodeData(address)
                     val lat = location.lat
                     val lon = location.lon
-                    var unitsInMiles = Units.MILES.equals(units.value)
                     if (lat != null && lon != null) {
                         val latlong = Pair<Double, Double>(
                             lat.toDouble(),
                             lon.toDouble()
                         )
-                        val storePair = closestStoreFinder.findClosestStore(latlong, unitsInMiles)
-                        activityInterface.onStoreFound(storePair.first, storePair.second.toString())
+                        val unitType = units.value ?: Units.MILES
+
+                        val storePair = closestStoreFinder.findClosestStore(latlong, unitType)
+                        activityInterface.onStoreFound(storePair.first, storePair.second, unitType)
                     }
                 } catch (ex: Exception) {
                     activityInterface.onError(ex.toString())
