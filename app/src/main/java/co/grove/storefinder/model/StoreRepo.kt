@@ -16,6 +16,14 @@ class StoreRepo(private val inputStream: InputStream) {
         storeList = csvFile.parseStoreList()
     }
 
+    fun getStoreCount(): Int {
+        return storeList.size
+    }
+
+    fun getStore(index: Int): Store {
+        return storeList[index]
+    }
+
     init {
         GlobalScope.launch {
             loadStoreData()

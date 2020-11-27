@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import co.grove.storefinder.model.StoreRepo
 import co.grove.storefinder.network.NetworkManager
 import co.grove.storefinder.ui.MainActivityInterface
+import co.grove.storefinder.util.ClosestStoreFinder
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -20,7 +21,7 @@ enum class AddressType {
     ZIPCODE
 }
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
     var units = MutableLiveData<Units>()
     var addressType = MutableLiveData<AddressType>()
     var addressField = MutableLiveData<String>()
@@ -28,15 +29,21 @@ class MainViewModel: ViewModel() {
     lateinit var storeRepo: StoreRepo
     lateinit var networkManager: NetworkManager
     lateinit var activityInterface: MainActivityInterface
+    lateinit var closestStoreFinder: ClosestStoreFinder
 
     /**
      * Normally I'd find a way to get dependency injection working here but it's tricky,
      * and is probably overkill for this example
      */
-    fun initializeObjects(storeRepo: StoreRepo, networkManager: NetworkManager, activity: MainActivityInterface) {
+    fun initializeObjects(
+        storeRepo: StoreRepo,
+        networkManager: NetworkManager,
+        activity: MainActivityInterface
+    ) {
         this.storeRepo = storeRepo
         this.networkManager = networkManager
         this.activityInterface = activity
+        closestStoreFinder = ClosestStoreFinder(storeRepo)
     }
 
     fun onFindStoreClicked() {
@@ -45,7 +52,18 @@ class MainViewModel: ViewModel() {
         if (address != null) {
             viewModelScope.launch {
                 try {
-                    networkManager.requestGeocodeData(address)
+                    val location = networkManager.requestGeocodeData(address)
+                    val lat = location.lat
+                    val lon = location.lon
+                    var unitsInMiles = Units.MILES.equals(units.value)
+                    if (lat != null && lon != null) {
+                        val latlong = Pair<Double, Double>(
+                            lat.toDouble(),
+                            lon.toDouble()
+                        )
+                        val storePair = closestStoreFinder.findClosestStore(latlong, unitsInMiles)
+                        activityInterface.onStoreFound(storePair.first, storePair.second.toString())
+                    }
                 } catch (ex: Exception) {
                     activityInterface.onError(ex.toString())
                 }

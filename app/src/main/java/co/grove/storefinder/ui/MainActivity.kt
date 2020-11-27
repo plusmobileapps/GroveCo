@@ -3,10 +3,7 @@ package co.grove.storefinder.ui
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -36,11 +33,15 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
     lateinit var unitsGroup: RadioGroup
     lateinit var addressGroup: RadioGroup
 
+    lateinit var addressText: EditText
+
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        addressText = findViewById(R.id.addressEditText)
 
         storeData = findViewById(R.id.closestStoreData)
         errorText = findViewById(R.id.errorMessage)
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         }
 
         findViewById<Button>(R.id.findStoreButton).setOnClickListener {
+            viewModel.addressField.value = addressText.text.toString()
             viewModel.onFindStoreClicked()
         }
 

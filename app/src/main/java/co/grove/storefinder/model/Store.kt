@@ -7,8 +7,8 @@ data class Store(
     val city: String,
     val state: String,
     val zip: String,
-    val lat: Float,
-    val long: Float,
+    val lat: Double,
+    val long: Double,
     val county: String
 ) {
 
@@ -23,8 +23,8 @@ data class Store(
                         row[3],
                         row[4],
                         row[5],
-                        row[6].toFloat(),
-                        row[7].toFloat(),
+                        row[6].toDouble(),
+                        row[7].toDouble(),
                         row[8]
                 )
             }
@@ -35,8 +35,8 @@ data class Store(
                     row[3],
                     row[4],
                     row[5],
-                    row[6].toFloat(),
-                    row[7].toFloat(),
+                    row[6].toDouble(),
+                    row[7].toDouble(),
                     ""
             )
         }

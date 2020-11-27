@@ -1,16 +1,41 @@
 package co.grove.storefinder.util
 
+import co.grove.storefinder.model.Store
+import co.grove.storefinder.model.StoreRepo
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
-class LatLongUtil {
+class ClosestStoreFinder(val repo: StoreRepo) {
+
+    fun findClosestStore(location: Pair<Double, Double>, miles: Boolean): Pair<Store, Double> {
+        val lat = location.first
+        val lon = location.second
+
+        var closestStore = repo.getStore(0)
+        var closestDistance = Double.MAX_VALUE
+
+        for (idx in 0 until repo.getStoreCount()) {
+            val store = repo.getStore(idx)
+            val storeLat = store.lat
+            val storeLon = store.long
+            val distance = calculateDistance(lat, lon, storeLat, storeLon, miles)
+
+            if (distance < closestDistance) {
+                closestDistance = distance
+                closestStore = store
+            }
+        }
+
+        return Pair(closestStore, closestDistance)
+    }
+
 
     /**
      * Adapted from:
      * https://dzone.com/articles/distance-calculation-using-3
      */
-    fun calculateDistance(
+    private fun calculateDistance(
         lat1: Double,
         lon1: Double,
         lat2: Double,
@@ -44,6 +69,8 @@ class LatLongUtil {
     private fun rad2deg(rad: Double): Double {
         return (rad * 180.0 / Math.PI)
     }
+
+
 
 }
 
