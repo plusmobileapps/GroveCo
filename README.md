@@ -27,3 +27,13 @@ The unit tests are located here:
 https://github.com/MobileOak/GroveCo/tree/master/app/src/test/java/co/grove/storefinder
 
 If this were an actual production app, there would be more unit tests than provided - the ones that exist are there to demonstrate my ability to use Mockito for creating unit tests. In a production app, I would have also written a smoke test in Espresso to test that UI actually loaded and that the buttons could be clicked.
+
+# Building the App
+For those looking to build the app, the steps are:
+ - Download and install Android Studio
+ - Clone this repository
+ - Open the root file in Android Studio
+ - Run the app (either on an attached Android device with developer options enabled and USB debugging enabled or in an emulator)
+
+Additionally, you could, on an Android device that has permissions set to allow side-loading of APKs, point at my pre-built APK located here:
+https://github.com/MobileOak/GroveCo/raw/master/storeFinder.apk
