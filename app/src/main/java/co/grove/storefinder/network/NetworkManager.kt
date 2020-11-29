@@ -38,15 +38,13 @@ class NetworkManager(context: Context) {
                 }
             },
             {
-                Log.e(TAG, "That didn't work:" + it.networkResponse)
+                Log.e(TAG, "Network request failed:" + it.networkResponse)
                 cont.resumeWithException(Exception(it.message))
             }
         )
 
-
         // Add the request to the RequestQueue.
         queue.add(stringRequest)
-
     }
 
     private fun createUrl(address: String): String {

@@ -7,7 +7,7 @@ import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
-class ClosestStoreFinder(val repo: StoreRepo) {
+class ClosestStoreFinder(private val repo: StoreRepo) {
 
     fun findClosestStore(location: Pair<Double, Double>, unitType: Units): Pair<Store, Double> {
         val lat = location.first

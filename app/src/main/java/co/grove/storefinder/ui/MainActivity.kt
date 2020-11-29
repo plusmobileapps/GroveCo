@@ -12,6 +12,7 @@ import co.grove.storefinder.R
 import co.grove.storefinder.model.Store
 import co.grove.storefinder.model.StoreRepo
 import co.grove.storefinder.network.NetworkManager
+import co.grove.storefinder.util.ClosestStoreFinder
 import co.grove.storefinder.viewmodel.MainViewModel
 import co.grove.storefinder.viewmodel.Units
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,11 +58,11 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         }
 
         findViewById<Button>(R.id.findStoreButton).setOnClickListener {
-            viewModel.addressField.value = addressText.text.toString()
+            viewModel.addressField.value = addressText.text.toString().trim()
             viewModel.onFindStoreClicked()
         }
 
-        viewModel.initializeObjects(storeRepo, networkManager, this)
+        viewModel.initializeObjects(networkManager, this, ClosestStoreFinder(storeRepo))
     }
 
     override fun onEmptyAddress() {

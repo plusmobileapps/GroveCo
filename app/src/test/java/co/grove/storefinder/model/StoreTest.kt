@@ -37,8 +37,8 @@ class StoreTest {
         assert(store.city == city)
         assert(store.state == state)
         assert(store.zip == zip)
-        assert(store.lat == lat.toFloat())
-        assert(store.long == long.toFloat())
+        assert(store.lat == lat.toDouble())
+        assert(store.long == long.toDouble())
         assert(store.county == county)
     }
 
@@ -64,8 +64,8 @@ class StoreTest {
         assert(store.city == city)
         assert(store.state == state)
         assert(store.zip == zip)
-        assert(store.lat == lat.toFloat())
-        assert(store.long == long.toFloat())
+        assert(store.lat == lat.toDouble())
+        assert(store.long == long.toDouble())
         assert(store.county == "")
     }
 }
