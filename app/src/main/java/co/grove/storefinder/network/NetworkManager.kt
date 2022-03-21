@@ -7,12 +7,15 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-
-class NetworkManager(context: Context) {
+@Singleton
+class NetworkManager @Inject constructor(@ApplicationContext context: Context) {
     private val TAG = NetworkManager::class.simpleName
 
     private var queue = Volley.newRequestQueue(context)

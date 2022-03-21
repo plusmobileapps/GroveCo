@@ -1,15 +1,19 @@
 package co.grove.storefinder.viewmodel
 
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.grove.storefinder.model.Store
 import co.grove.storefinder.network.GeocodeLocations
 import co.grove.storefinder.network.NetworkManager
 import co.grove.storefinder.ui.MainActivityInterface
 import co.grove.storefinder.util.ClosestStoreFinder
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import javax.inject.Inject
 
 enum class Units(var displayString: String) {
     MILES("Miles"),
@@ -20,27 +24,23 @@ enum class Units(var displayString: String) {
     }
 }
 
-class MainViewModel : ViewModel() {
+sealed class MainState {
+    object EmptyAddress : MainState()
+    data class Error(val message: String) : MainState()
+    data class StoreFound(val store: Store, val distance: Double, val units: Units) : MainState()
+}
+
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val networkManager: NetworkManager,
+    private val closestStoreFinder: ClosestStoreFinder,
+): ViewModel() {
+
+    private val _state = MutableLiveData<MainState>()
+    val state: LiveData<MainState> get() = _state
+
     var units = MutableLiveData<Units>()
     var addressField = MutableLiveData<String>()
-
-    lateinit var networkManager: NetworkManager
-    lateinit var activityInterface: MainActivityInterface
-    lateinit var closestStoreFinder: ClosestStoreFinder
-
-    /**
-     * Normally I'd find a way to get dependency injection working here but it's tricky,
-     * and is probably overkill for this example
-     */
-    fun initializeObjects(
-        networkManager: NetworkManager,
-        activity: MainActivityInterface,
-        closestStoreFinder: ClosestStoreFinder
-    ) {
-        this.networkManager = networkManager
-        this.activityInterface = activity
-        this.closestStoreFinder = closestStoreFinder
-    }
 
     fun onFindStoreClicked() {
         val address = addressField.value
@@ -48,16 +48,17 @@ class MainViewModel : ViewModel() {
             viewModelScope.launch {
                 val location = networkManager.requestGeocodeData(address)
                 val latlong = convertGeocodeLocationsToLatLongPair(location)
-                if (latlong != null) {
+                val newState = if (latlong != null) {
                     val unitType = units.value ?: Units.MILES
                     val storePair = closestStoreFinder.findClosestStore(latlong, unitType)
-                    activityInterface.onStoreFound(storePair.first, storePair.second, unitType)
+                    MainState.StoreFound(storePair.first, storePair.second, unitType)
                 } else {
-                    activityInterface.onError("Could not find address")
+                    MainState.Error("Could not find address")
                 }
+                _state.postValue(newState)
             }
         } else {
-            activityInterface.onEmptyAddress()
+            _state.value = MainState.EmptyAddress
         }
     }
 

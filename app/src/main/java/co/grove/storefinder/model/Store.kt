@@ -13,33 +13,31 @@ data class Store(
 ) {
 
     companion object {
-        fun createStoreFromCsvRow(row: Array<String>): Store {
+        fun createStoreFromCsvRow(row: Array<String>): Store =
             // This is messy but some of the rows in the CSV are missing the last column of data.
             if (row.size == 9) {
-                return Store(
-                        row[0],
-                        row[1],
-                        row[2],
-                        row[3],
-                        row[4],
-                        row[5],
-                        row[6].toDouble(),
-                        row[7].toDouble(),
-                        row[8]
+                Store(
+                    storeName = row[0],
+                    storeLocation = row[1],
+                    address = row[2],
+                    city = row[3],
+                    state = row[4],
+                    zip = row[5],
+                    lat = row[6].toDouble(),
+                    long = row[7].toDouble(),
+                    county = row[8]
                 )
-            }
-            return Store(
-                    row[0],
-                    row[1],
-                    row[2],
-                    row[3],
-                    row[4],
-                    row[5],
-                    row[6].toDouble(),
-                    row[7].toDouble(),
-                    ""
+            } else Store(
+                storeName = row[0],
+                storeLocation = row[1],
+                address = row[2],
+                city = row[3],
+                state = row[4],
+                zip = row[5],
+                lat = row[6].toDouble(),
+                long = row[7].toDouble(),
+                county = ""
             )
-        }
     }
 }
 

@@ -5,16 +5,13 @@ import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.suspendCoroutine
 
-class StoreRepo(private val inputStream: InputStream) {
-    private lateinit var storeList: List<Store>
-
-    private suspend fun loadStoreData() = suspendCoroutine<Unit> {
-        val reader = BufferedReader(InputStreamReader(inputStream))
-        val csvFile = CSVFile(reader)
-        storeList = csvFile.parseStoreList()
-    }
+@Singleton
+class StoreRepo @Inject constructor(private val storeCache: StoreCache) {
+    private var storeList: List<Store> = emptyList()
 
     fun getStoreCount(): Int {
         return storeList.size
@@ -28,5 +25,9 @@ class StoreRepo(private val inputStream: InputStream) {
         GlobalScope.launch {
             loadStoreData()
         }
+    }
+
+    private suspend fun loadStoreData() {
+        storeList = storeCache.parseStoreList()
     }
 }

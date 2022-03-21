@@ -13,6 +13,7 @@ import co.grove.storefinder.model.Store
 import co.grove.storefinder.model.StoreRepo
 import co.grove.storefinder.network.NetworkManager
 import co.grove.storefinder.util.ClosestStoreFinder
+import co.grove.storefinder.viewmodel.MainState
 import co.grove.storefinder.viewmodel.MainViewModel
 import co.grove.storefinder.viewmodel.Units
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,13 +21,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MainActivityInterface {
-
-    @Inject
-    lateinit var storeRepo: StoreRepo
-
-    @Inject
-    lateinit var networkManager: NetworkManager
+class MainActivity : AppCompatActivity() {
 
     lateinit var storeData: TextView
     lateinit var errorText: TextView
@@ -62,22 +57,28 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
             viewModel.onFindStoreClicked()
         }
 
-        viewModel.initializeObjects(networkManager, this, ClosestStoreFinder(storeRepo))
+        viewModel.state.observe(this) { state ->
+            when (state) {
+                MainState.EmptyAddress -> onEmptyAddress()
+                is MainState.Error -> onError(state.message)
+                is MainState.StoreFound -> onStoreFound(state.store, state.distance, state.units)
+            }
+        }
     }
 
-    override fun onEmptyAddress() {
+    private fun onEmptyAddress() {
         val errorMessage = resources.getString(R.string.empty_address_error)
         val errorTitle = resources.getString(R.string.error_title)
         AlertDialog.Builder(this).setTitle(errorTitle).setMessage(errorMessage).show()
     }
 
-    override fun onError(errorMessage: String) {
+    private fun onError(errorMessage: String) {
         storeData.visibility = GONE
         errorText.text = errorMessage
         errorText.visibility = VISIBLE
     }
 
-    override fun onStoreFound(store: Store, distance: Double, units: Units) {
+    private fun onStoreFound(store: Store, distance: Double, units: Units) {
         storeData.visibility = VISIBLE
         errorText.visibility = GONE
         val distanceString = "%.2f".format(distance) + " " + units.toString()

@@ -3,11 +3,14 @@ package co.grove.storefinder.util
 import co.grove.storefinder.model.Store
 import co.grove.storefinder.model.StoreRepo
 import co.grove.storefinder.viewmodel.Units
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
-class ClosestStoreFinder(private val repo: StoreRepo) {
+@Singleton
+class ClosestStoreFinder @Inject constructor(private val repo: StoreRepo) {
 
     fun findClosestStore(location: Pair<Double, Double>, unitType: Units): Pair<Store, Double> {
         val lat = location.first
